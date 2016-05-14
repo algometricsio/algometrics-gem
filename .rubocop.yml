@@ -1,0 +1,10 @@
+AllCops:
+  TargetRubyVersion: 2.2
+Documentation:
+  Enabled: false
+Metrics/LineLength:
+  Max: 135
+StringLiterals:
+  Enabled: false
+Style/EmptyLinesAroundClassBody:
+  Enabled: false
