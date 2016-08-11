@@ -23,7 +23,7 @@ describe Algometrics::Client do
 
   describe '#validate_actor_string' do
     it 'should return true for valid string' do
-      expect(client.send(:validate_actor_string, 'abc_123#456abc')).to eq true
+      expect(client.send(:validate_actor_string, 'abc_123-4#123-456_abc')).to eq true
     end
 
     it 'should return false for invalid string' do
@@ -68,6 +68,18 @@ describe Algometrics::Client do
         it { should be false }
       end
     end
+  end
+
+  describe '#valid_event_name?' do
+      context 'with valid event name' do
+        subject { client.send(:valid_event_name?, 'abc_1-2-3') }
+        it { should be true }
+      end
+
+      context 'with invalid event name' do
+        subject { client.send(:valid_event_name?, 'abc.##1_2-3') }
+        it { should be false }
+      end
   end
 
   describe '#user_agent' do

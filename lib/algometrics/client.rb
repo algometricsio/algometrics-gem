@@ -55,7 +55,14 @@ module Algometrics
 
     def track(event:, actor:, status: Algometrics::SUCCESS)
       unless valid_actor?(actor)
-        Algometrics::Client.logger.error("Incorrect method execution: invalid actor: '#{actor}'")
+        Algometrics::Client.logger.error("Algometrics client error: invalid actor: '#{actor}' " \
+                                         "actor type and id must be of the following format: /\\A[\\w\\- ]+\\z/")
+        return
+      end
+
+      unless valid_event_name?(event)
+        Algometrics::Client.logger.error("Algometrics client error: invalid event name: '#{event}' " \
+                                         "event name must be of the following format: /\\A[\\w\\- ]+\\z/")
         return
       end
 
@@ -91,7 +98,7 @@ module Algometrics
     end
 
     def validate_actor_string(str)
-      !(str =~ /\A\w+#\w+\z/).nil?
+      !(str =~ /\A[\w\- ]+#[\w\- ]+\z/).nil?
     end
 
     def validate_actor_hash(hash)
@@ -110,5 +117,8 @@ module Algometrics
       end
     end
 
+    def valid_event_name?(str)
+      !(str =~ /\A[\w\- ]+\z/).nil?
+    end
   end
 end
