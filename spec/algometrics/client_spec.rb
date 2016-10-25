@@ -23,11 +23,11 @@ describe Algometrics::Client do
 
   describe '#validate_actor_string' do
     it 'should return true for valid string' do
-      expect(client.send(:validate_actor_string, 'abc_123-4#123-456_abc')).to eq true
+      expect(client.send(:validate_actor_string, 'abc_123-4.-,_#123-456_abc.-,_')).to eq true
     end
 
     it 'should return false for invalid string' do
-      expect(client.send(:validate_actor_string, 'abc.123#asd')).to eq false
+      expect(client.send(:validate_actor_string, 'abc|123#asd')).to eq false
       expect(client.send(:validate_actor_string, 'abc')).to eq false
     end
   end
@@ -40,7 +40,7 @@ describe Algometrics::Client do
     it 'should return false for invalid hash' do
       expect(client.send(:validate_actor_hash, {})).to eq false
       expect(client.send(:validate_actor_hash, type: '123#', id: 'sad')).to eq false
-      expect(client.send(:validate_actor_hash, type: '123', id: 'x.y')).to eq false
+      expect(client.send(:validate_actor_hash, type: '123', id: 'x|y')).to eq false
     end
   end
 
@@ -72,13 +72,15 @@ describe Algometrics::Client do
 
   describe '#valid_event_name?' do
       context 'with valid event name' do
-        subject { client.send(:valid_event_name?, 'abc_1-2-3') }
+        subject { client.send(:valid_event_name?, 'abc_1-2-3.,- ') }
         it { should be true }
       end
 
       context 'with invalid event name' do
-        subject { client.send(:valid_event_name?, 'abc.##1_2-3') }
-        it { should be false }
+        it 'should return false for invalid hash' do
+          expect(client.send(:valid_event_name?, 'abc.##1_2-3')).to eq false
+          expect(client.send(:valid_event_name?, '123|abc')).to eq false
+        end
       end
   end
 
