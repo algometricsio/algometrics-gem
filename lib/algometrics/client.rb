@@ -98,7 +98,7 @@ module Algometrics
     end
 
     def validate_actor_string(str)
-      !(str =~ /\A[\w\- ]+#[\w\- ]+\z/).nil?
+      !(str =~ /\A[\w\- ,\.]+#[\w\- ,\.]+\z/).nil?
     end
 
     def validate_actor_hash(hash)
@@ -118,7 +118,7 @@ module Algometrics
     end
 
     def valid_event_name?(str)
-      !(str =~ /\A[\w\- ]+\z/).nil?
+      !(str =~ /\A[\w\- ,\.]+\z/).nil?
     end
   end
 end
